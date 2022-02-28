@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>카카오톡 로그인 샘플</title>
+</head>
+<body>
+
+<div id="kakao">
+    <button>
+    <a href="https://kauth.kakao.com/oauth/authorize?client_id=4c5319b0b1dd1d28fb72f456eb20a542&redirect_uri=http://localhost:8080/kakao_login_sample_war_exploded/redirect.jsp&response_type=code">
+       카카오톡 로그인 </a>
+        </a>
+    </button>
+
+    <button class="btn" onclick="kakaoLogout()">
+            카카오 로그아웃
+    </button>
+</div>
+<!-- 카카오 스크립트 -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <link rel="stylesheet" href="core.css">
+<script>
+    Kakao.init('ee7a76af1e2596a6047f0281f1ba9037'); //발급받은 키 중 javascript키를 사용해준다.
+    console.log(Kakao.isInitialized()); // sdk초기화여부판단
+
+</script>
+</body>
+</html>
+
+
