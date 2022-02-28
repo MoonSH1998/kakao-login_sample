@@ -1,19 +1,24 @@
-<head>
-<title>login</title>
-    <div id="a"></div>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="org.json.simple.parser.*"%>
+<%@ page import="org.json.simple.*"%>
+<%@ page import="User.Core" %>
+<%
+    String code = request.getParameter("code");
 
-    <script src="https://api.jquery.com/jQuery.ajax"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script language="javascript">
-    function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    String result = (new Core().getTokenStart(code));
+
+    JSONObject jsonobj = (JSONObject) (new JSONParser().parse(result));
+
+    String url =  "http://localhost:8080/kakao_login_sample_war_exploded/getToken.html";
+    if (jsonobj.get("access_token") != null) {
+        url += "?oauth=kakao&access_token=" + jsonobj.get("access_token");
+        url += "&refresh_token=" + jsonobj.get("refresh_token");
+        url += "&caller=" + request.getParameter("caller");
     }
-    var code = getParameterByName('code');
-    $("#a").html(code);
+    else {
+        url = "http://localhost:8080/kakao_login_sample_war_exploded/main.html";
+    }
+    response.sendRedirect(url);
 
-</script>
 
-</head>
+%>
