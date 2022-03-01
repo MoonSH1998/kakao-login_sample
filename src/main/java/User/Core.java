@@ -57,4 +57,45 @@ public class Core {
         }
     }
 
+    public String getTokenFinish(String acctoken, String reftoken) throws Exception {
+        String url = "https://kapi.kakao.com/v2/user/me";
+        url += "?secure_resource=true";
+
+        HttpURLConnection con = (HttpURLConnection) (new URL(url)).openConnection();
+        con.setRequestMethod("GET");
+        con.setRequestProperty("Authorization", "Bearer " + acctoken);
+        return fixJSON(response("getKakaoUserInfo : ", con));
+    }
+
+
+    public static String fixJSON(String str) {
+        if (str == null) return str;
+
+        str = str.trim().replace("{\"","@$lb"); // for {"
+        str = str.replace("\"}","@$rb"); // for "}
+
+        str = str.replace("\",\"","@$cm"); // for ","
+        str = str.replace("\":\"","@$cl"); // for ":"
+
+        str = str.replace(":\"", "@$rdqc"); // for :"
+        str = str.replace("\":", "@$ldqc"); // for ":
+        str = str.replace(",\"", "@$rdqo"); // for ,"
+        str = str.replace("\",", "@$ldqo"); // for ",
+
+        str = str.replace("'", "").replace("\"", "").replace("\\","");
+
+        str = str.replace("@$rdqo",",\"" ); // for ,"
+        str = str.replace("@$ldqo", "\"," ); // for ",
+        str = str.replace("@$rdqc", ":\""); // for :"
+        str = str.replace("@$ldqc","\":"); // for ":
+
+        str = str.replace("@$lb", "{\"");
+        str = str.replace("@$rb","\"}");
+
+        str = str.replace("@$cm","\",\"");
+        str = str.replace("@$cl","\":\"");
+
+        return str;
+    }
+
 }
